@@ -26,6 +26,7 @@ public class UserController {
     @PostMapping("/admin/user/create")
     public String handleCreateUser(Model model, @ModelAttribute("newUser") User hoidanit) {
         System.out.println(">>> Run here " + hoidanit);
+        this.userService.handleSaveUser(hoidanit);
         return "hello";
     }
 

@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import vn.hoidanit.laptopshop.domain.User;
 import vn.hoidanit.laptopshop.service.UserService;
 
+import java.util.List;
+
 @Controller
 public class UserController {
 
@@ -15,6 +17,13 @@ public class UserController {
 
     public UserController(UserService userService) {
         this.userService = userService;
+    }
+
+    @GetMapping("/")
+    public String getHomePage(Model model) {
+        List<User> arrUsers = this.userService.handleGetAllUsers();
+        System.out.println(arrUsers);
+        return "hello";
     }
 
     @GetMapping("/admin/user/create")

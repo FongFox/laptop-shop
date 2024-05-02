@@ -4,6 +4,8 @@ import org.springframework.stereotype.Service;
 import vn.hoidanit.laptopshop.domain.User;
 import vn.hoidanit.laptopshop.repository.UserRepository;
 
+import java.util.List;
+
 @Service
 public class UserService {
     private final UserRepository userRepository;
@@ -14,6 +16,14 @@ public class UserService {
 
     public String handleHello() {
         return "Hello from service!";
+    }
+
+    public List<User> handleGetAllUsers() {
+        return this.userRepository.findAll();
+    }
+
+    public List<User> handleGetAllUsersByEmail(String email) {
+        return this.userRepository.findByEmail(email);
     }
 
     public User handleSaveUser(User user) {

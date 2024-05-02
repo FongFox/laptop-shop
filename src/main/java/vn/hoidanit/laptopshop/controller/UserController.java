@@ -26,8 +26,13 @@ public class UserController {
         return "hello";
     }
 
+    @GetMapping("/admin/user")
+    public String getUserPage(Model model) {
+        return "admin/user/show";
+    }
+
     @GetMapping("/admin/user/create")
-    public String getAddUserPage(Model model) {
+    public String getCreateUserPage(Model model) {
         model.addAttribute("newUser", new User());
         return "/admin/user/create";
     }

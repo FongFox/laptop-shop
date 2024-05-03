@@ -32,34 +32,22 @@
         </tr>
         </thead>
         <tbody>
-        <tr>
-            <th scope="row">1</th>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>
-                <button type="button" class="btn btn-outline-success">View</button>
-            </td>
-            <td>
-                <button type="button" class="btn btn-outline-warning">Update</button>
-            </td>
-            <td>
-                <button type="button" class="btn btn-outline-danger">Delete</button>
-            </td>
-        </tr>
-        <tr>
-            <th scope="row">2</th>
-            <td>Jacob</td>
-            <td>Thornton</td>
-            <td>
-                <button type="button" class="btn btn-outline-success">View</button>
-            </td>
-            <td>
-                <button type="button" class="btn btn-outline-warning">Update</button>
-            </td>
-            <td>
-                <button type="button" class="btn btn-outline-danger">Delete</button>
-            </td>
-        </tr>
+        <c:forEach var="user" items="${users}">
+            <tr>
+                <th scope="row">${user.id}</th>
+                <td>${user.email}</td>
+                <td>${user.fullName}</td>
+                <td>
+                    <button type="button" class="btn btn-outline-success">View</button>
+                </td>
+                <td>
+                    <button type="button" class="btn btn-outline-warning">Update</button>
+                </td>
+                <td>
+                    <button type="button" class="btn btn-outline-danger">Delete</button>
+                </td>
+            </tr>
+        </c:forEach>
         </tbody>
     </table>
 </div>

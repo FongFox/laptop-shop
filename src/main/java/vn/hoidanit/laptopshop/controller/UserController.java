@@ -28,6 +28,9 @@ public class UserController {
 
     @GetMapping("/admin/user")
     public String getUserPage(Model model) {
+        List<User> users = userService.handleGetAllUsers();
+//        System.out.println(">>> Check user: " + users);
+        model.addAttribute("users", users);
         return "admin/user/show";
     }
 
@@ -41,7 +44,7 @@ public class UserController {
     public String handleCreateUser(Model model, @ModelAttribute("newUser") User hoidanit) {
         System.out.println(">>> Run here " + hoidanit);
         this.userService.handleSaveUser(hoidanit);
-        return "hello";
+        return "redirect:/admin/user";
     }
 
 }

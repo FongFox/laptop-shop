@@ -4,6 +4,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import vn.hoidanit.laptopshop.domain.User;
 import vn.hoidanit.laptopshop.service.UserService;
@@ -47,4 +48,13 @@ public class UserController {
         return "redirect:/admin/user";
     }
 
+    @GetMapping("/admin/user/detail/{id}")
+    public String getUserDetailPage(@PathVariable long id, Model model) {
+        User user = userService.handleGetUserById(id);
+//        model.addAttribute("user", user);
+        model.addAttribute("id", id);
+//        System.out.println(">>> check path id = " + id);
+//        System.out.println(">>> check user = " + user);
+        return "admin/user/detail";
+    }
 }

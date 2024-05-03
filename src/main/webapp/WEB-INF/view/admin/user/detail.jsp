@@ -36,6 +36,9 @@
                         FullName: ${user.fullName}
                     </li>
                     <li class="list-group-item">
+                        Phone: ${user.phone}
+                    </li>
+                    <li class="list-group-item">
                         Address: ${user.address}
                     </li>
                 </ul>

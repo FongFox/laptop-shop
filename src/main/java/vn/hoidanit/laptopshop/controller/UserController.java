@@ -30,7 +30,6 @@ public class UserController {
     @GetMapping("/admin/user")
     public String getUserPage(Model model) {
         List<User> users = userService.handleGetAllUsers();
-//        System.out.println(">>> Check user: " + users);
         model.addAttribute("users", users);
         return "admin/user/show";
     }
@@ -50,22 +49,28 @@ public class UserController {
 
     @PostMapping("/admin/user/create")
     public String handleCreateUser(Model model, @ModelAttribute("newUser") User hoidanit) {
-//        System.out.println(">>> Run here " + hoidanit);
         this.userService.handleSaveUser(hoidanit);
         return "redirect:/admin/user";
     }
 
     @GetMapping("/admin/user/update/{id}")
     public String getUpdateUserPage(@PathVariable long id, Model model) {
-        User user = userService.handleGetUserById(id);
-        model.addAttribute("user", user);
+        User currentUser = userService.handleGetUserById(id);
+        model.addAttribute("user", currentUser);
         return "/admin/user/update";
     }
 
     @PostMapping("/admin/user/update")
     public String handleUpdateUser(Model model, @ModelAttribute("user") User user) {
-//        System.out.println(">> check user: " + user);
-        this.userService.handleSaveUser(user);
+        User currentUser = userService.handleGetUserById(user.getId());
+        if (currentUser != null) {
+            currentUser.setFullName(user.getFullName());
+            currentUser.setAddress(user.getAddress());
+            currentUser.setPhone(user.getPhone());
+            
+            this.userService.handleSaveUser(currentUser);
+        }
+
         return "redirect:/admin/user";
     }
 }

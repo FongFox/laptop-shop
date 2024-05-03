@@ -35,6 +35,13 @@ public class UserController {
         return "admin/user/show";
     }
 
+    @GetMapping("/admin/user/detail/{id}")
+    public String getUserDetailPage(@PathVariable long id, Model model) {
+        User user = userService.handleGetUserById(id);
+        model.addAttribute("user", user);
+        return "admin/user/detail";
+    }
+
     @GetMapping("/admin/user/create")
     public String getCreateUserPage(Model model) {
         model.addAttribute("newUser", new User());
@@ -43,18 +50,22 @@ public class UserController {
 
     @PostMapping("/admin/user/create")
     public String handleCreateUser(Model model, @ModelAttribute("newUser") User hoidanit) {
-        System.out.println(">>> Run here " + hoidanit);
+//        System.out.println(">>> Run here " + hoidanit);
         this.userService.handleSaveUser(hoidanit);
         return "redirect:/admin/user";
     }
 
-    @GetMapping("/admin/user/detail/{id}")
-    public String getUserDetailPage(@PathVariable long id, Model model) {
+    @GetMapping("/admin/user/update/{id}")
+    public String getUpdateUserPage(@PathVariable long id, Model model) {
         User user = userService.handleGetUserById(id);
-//        model.addAttribute("user", user);
-        model.addAttribute("id", id);
-//        System.out.println(">>> check path id = " + id);
-//        System.out.println(">>> check user = " + user);
-        return "admin/user/detail";
+        model.addAttribute("user", user);
+        return "/admin/user/update";
+    }
+
+    @PostMapping("/admin/user/update")
+    public String handleUpdateUser(Model model, @ModelAttribute("user") User user) {
+//        System.out.println(">> check user: " + user);
+        this.userService.handleSaveUser(user);
+        return "redirect:/admin/user";
     }
 }

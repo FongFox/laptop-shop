@@ -26,11 +26,24 @@
                     User Information
                 </div>
                 <ul class="list-group list-group-flush">
-                    <li class="list-group-item">Id: #</li>
-                    <li class="list-group-item">Email: -</li>
-                    <li class="list-group-item">FullName: -</li>
-                    <li class="list-group-item">Address: -</li>
+                    <li class="list-group-item">
+                        Id: ${user.id}
+                    </li>
+                    <li class="list-group-item">
+                        Email: ${user.email}
+                    </li>
+                    <li class="list-group-item">
+                        FullName: ${user.fullName}
+                    </li>
+                    <li class="list-group-item">
+                        Address: ${user.address}
+                    </li>
                 </ul>
+            </div>
+            <div class="mt-3 mb-3">
+                <a href="/admin/user" type="button" class="btn btn-outline-success">
+                    Back
+                </a>
             </div>
         </div>
     </div>

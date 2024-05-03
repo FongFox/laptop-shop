@@ -40,12 +40,14 @@
                         <td>${user.email}</td>
                         <td>${user.fullName}</td>
                         <td>
-                            <a href="/admin/user/detail/${user.id}" type="button" class="btn btn-outline-success">
+                            <a href="/admin/user/detail/${user.id}"
+                               type="button" class="btn btn-outline-success">
                                 View
                             </a>
                         </td>
                         <td>
-                            <a type="button" class="btn btn-outline-warning">Update</a>
+                            <a href="/admin/user/update/${user.id}" type="button"
+                               class="btn btn-outline-warning">Update</a>
                         </td>
                         <td>
                             <a type="button" class="btn btn-outline-danger">Delete</a>

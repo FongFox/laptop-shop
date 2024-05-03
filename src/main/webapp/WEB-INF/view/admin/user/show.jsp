@@ -47,10 +47,15 @@
                         </td>
                         <td>
                             <a href="/admin/user/update/${user.id}" type="button"
-                               class="btn btn-outline-warning">Update</a>
+                               class="btn btn-outline-warning">
+                                Update
+                            </a>
                         </td>
                         <td>
-                            <a type="button" class="btn btn-outline-danger">Delete</a>
+                            <a href="/admin/user/delete/${user.id}" type="button"
+                               class="btn btn-outline-danger">
+                                Delete
+                            </a>
                         </td>
                     </tr>
                 </c:forEach>

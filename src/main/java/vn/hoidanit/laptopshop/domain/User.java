@@ -3,6 +3,7 @@ package vn.hoidanit.laptopshop.domain;
 import jakarta.persistence.*;
 
 @Entity
+@Table(name = "users")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -13,6 +14,7 @@ public class User {
     private String fullName;
     private String address;
     private String phone;
+    public String avatar;
 
     public User() {
     }
@@ -63,6 +65,14 @@ public class User {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 
     @Override

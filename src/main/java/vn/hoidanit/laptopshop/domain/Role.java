@@ -2,6 +2,8 @@ package vn.hoidanit.laptopshop.domain;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "roles")
 public class Role {
@@ -11,6 +13,11 @@ public class Role {
 
     private String name;
     private String description;
+
+    // userID
+    // Role one to many User (Inverse side)
+    @OneToMany(mappedBy = "role")
+    private List<User> users;
 
     public Role() {
     }

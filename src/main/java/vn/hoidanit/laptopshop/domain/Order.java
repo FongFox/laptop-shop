@@ -12,6 +12,10 @@ public class Order {
     private double totalPrice;
 
     //user id
+    // Order many to one User (Owner side)
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
     public Order() {
     }

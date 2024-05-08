@@ -2,6 +2,8 @@ package vn.hoidanit.laptopshop.domain;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "users")
 public class User {
@@ -15,6 +17,17 @@ public class User {
     private String address;
     private String phone;
     public String avatar;
+
+    // roleID
+    // User many to one Role (Owner side)
+    @ManyToOne()
+    @JoinColumn(name = "role_id")
+    private Role role;
+
+    // orderID
+    // User one to many Order (Inverse side)
+    @OneToMany(mappedBy = "user")
+    private List<Order> orders;
 
     public User() {
     }

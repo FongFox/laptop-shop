@@ -1,4 +1,4 @@
-package vn.hoidanit.laptopshop.controller;
+package vn.hoidanit.laptopshop.controller.admin;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,13 +18,6 @@ public class UserController {
 
     public UserController(UserService userService) {
         this.userService = userService;
-    }
-
-    @GetMapping("/")
-    public String getHomePage(Model model) {
-        List<User> arrUsers = this.userService.handleGetAllUsers();
-        System.out.println(arrUsers);
-        return "hello";
     }
 
     @GetMapping("/admin/user")
@@ -84,7 +77,6 @@ public class UserController {
     @PostMapping("admin/user/delete")
     public String handleDeleteUserPage(@ModelAttribute("newUser") User user, Model model) {
         this.userService.deleteUser(user.getId());
-//        System.out.println(">>> check id : " + user.getId());
         return "redirect:/admin/user";
     }
 }

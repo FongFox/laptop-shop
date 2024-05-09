@@ -41,28 +41,45 @@
                         <div class="col-md-6 col-12 mx-auto">
                             <h3>Create a User</h3>
                             <hr/>
-                            <form:form method="post" action="/admin/user/create" modelAttribute="newUser">
-                                <div class="mb-3">
+                            <form:form method="post" action="/admin/user/create" modelAttribute="newUser" class="row">
+                                <div class="mb-3 col-12 col-md-6">
                                     <label class="form-label">Email address:</label>
                                     <form:input type="email" class="form-control" path="email"/>
                                 </div>
-                                <div class="mb-3">
+                                <div class="mb-3 col-12 col-md-6">
                                     <label class="form-label">Password:</label>
                                     <form:input type="password" class="form-control" path="password"/>
                                 </div>
-                                <div class="mb-3">
+                                <div class="mb-3 col-12 col-md-6">
                                     <label class="form-label">Phone Number:</label>
                                     <form:input type="text" class="form-control" path="phone"/>
                                 </div>
-                                <div class="mb-3">
+                                <div class="mb-3 col-12 col-md-6">
                                     <label class="form-label">Full Name:</label>
                                     <form:input type="text" class="form-control" path="fullName"/>
                                 </div>
-                                <div class="mb-3">
+                                <div class="mb-3 col-12">
                                     <label class="form-label">Address:</label>
                                     <form:input type="text" class="form-control" path="address"/>
                                 </div>
-                                <button type="submit" class="btn btn-outline-primary mb-5">Create</button>
+                                <div class="mb-3 col-12 col-md-6">
+                                    <label class="form-label">Role:</label>
+                                    <select class="form-select">
+                                        <option value="ADMIN">ADMIN</option>
+                                        <option value="USER">USER</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3 col-12 col-md-6">
+                                    <label for="avatarFile" class="form-label">Default file input example</label>
+                                    <input class="form-control" type="file" id="avatarFile" accept=".png, .jpg, .jpeg">
+                                </div>
+                                <div class="mb-3 col-12">
+                                    <img style="max-height: 250px; display: none" alt="avatar preview"
+                                         id="avatarPreview"/>
+                                </div>
+                                <div class="mb-5 col-12">
+                                    <button type="submit" class="btn btn-outline-primary mb-5">Create</button>
+                                </div>
                             </form:form>
                         </div>
                     </div>

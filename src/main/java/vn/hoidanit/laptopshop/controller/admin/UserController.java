@@ -1,6 +1,6 @@
 package vn.hoidanit.laptopshop.controller.admin;
 
-import jakarta.servlet.ServletContext;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -9,10 +9,6 @@ import vn.hoidanit.laptopshop.domain.User;
 import vn.hoidanit.laptopshop.service.UploadService;
 import vn.hoidanit.laptopshop.service.UserService;
 
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.List;
 
 @Controller
@@ -21,9 +17,12 @@ public class UserController {
     private final UserService userService;
     private final UploadService uploadService;
 
-    public UserController(UserService userService, UploadService uploadService) {
+    private final PasswordEncoder passwordEncoder;
+
+    public UserController(UserService userService, UploadService uploadService, PasswordEncoder passwordEncoder) {
         this.userService = userService;
         this.uploadService = uploadService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @GetMapping("/admin/user")
@@ -50,8 +49,17 @@ public class UserController {
     public String handleCreateUser(Model model, @ModelAttribute("newUser") User hoidanit,
                                    @RequestParam("hoidanitFile") MultipartFile file) {
         String avatar = this.uploadService.handleSaveUpLoadFile(file, "avatar");
-        System.out.println("Check avatar: " + avatar);
-//        this.userService.handleSaveUser(hoidanit);
+        String hashPassword = this.passwordEncoder.encode(hoidanit.getPassword());
+
+        // Re-assign with new values
+        hoidanit.setAvatar(avatar);
+        hoidanit.setPassword(hashPassword);
+        hoidanit.setRole(userService.handleGetRoleByName(hoidanit.getRole().getName()));
+
+        // Save user
+        this.userService.handleSaveUser(hoidanit);
+
+        // Redirect to user table
         return "redirect:/admin/user";
     }
 

@@ -40,7 +40,7 @@
                     <div class="row">
                         <div class="col-12 mx-auto">
                             <div class="d-flex justify-content-between">
-                                <h3>User detail ${id}</h3>
+                                <h3>User detail</h3>
                             </div>
                             <hr/>
                             <div class="card" style="width: 60%;">
@@ -48,8 +48,11 @@
                                     User Information
                                 </div>
                                 <ul class="list-group list-group-flush">
-                                    <li class="list-group-item">
+                                    <li class="list-group-item d-none">
                                         Id: ${user.id}
+                                    </li>
+                                    <li class="list-group-item">
+                                        Role: ${user.role.name}
                                     </li>
                                     <li class="list-group-item">
                                         Email: ${user.email}

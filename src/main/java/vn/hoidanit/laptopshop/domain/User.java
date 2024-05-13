@@ -1,10 +1,7 @@
 package vn.hoidanit.laptopshop.domain;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 
 import java.util.List;
 
@@ -16,15 +13,15 @@ public class User {
     private long id;
 
     @NotNull
-    @Email
+    @Email(message = "Email is not valid", regexp = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[azA-Z0-9.-]+$")
     private String email;
 
     @NotNull
-    @Min(2)
+    @Size(min = 2, message = "Must have at least 2 characters")
     private String password;
 
     @NotNull
-    @Min(2)
+    @Size(min = 3, message = "Must have at least 3 characters")
     private String fullName;
 
     private String address;

@@ -54,34 +54,32 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-
-                                <%--                                <c:forEach var="user" items="${users}">--%>
-                                <%--                                    <tr>--%>
-                                <%--                                        <td>${user.id}</td>--%>
-                                <%--                                        <td>${user.email}</td>--%>
-                                <%--                                        <td>${user.fullName}</td>--%>
-                                <%--                                        <td>${user.role.name}</td>--%>
-                                <%--                                        <td>--%>
-                                <%--                                            <a href="/admin/product/detail/${user.id}"--%>
-                                <%--                                               type="button" class="btn btn-outline-success">--%>
-                                <%--                                                View--%>
-                                <%--                                            </a>--%>
-                                <%--                                        </td>--%>
-                                <%--                                        <td>--%>
-                                <%--                                            <a href="/admin/product/update/${user.id}" type="button"--%>
-                                <%--                                               class="btn btn-outline-warning">--%>
-                                <%--                                                Update--%>
-                                <%--                                            </a>--%>
-                                <%--                                        </td>--%>
-                                <%--                                        <td>--%>
-                                <%--                                            <a href="/admin/product/delete/${user.id}" type="button"--%>
-                                <%--                                               class="btn btn-outline-danger">--%>
-                                <%--                                                Delete--%>
-                                <%--                                            </a>--%>
-                                <%--                                        </td>--%>
-                                <%--                                    </tr>--%>
-                                <%--                                </c:forEach>--%>
-                                
+                                <c:forEach var="product" items="${products}">
+                                    <tr>
+                                        <td>${product.id}</td>
+                                        <td>${product.name}</td>
+                                        <td>${product.price}</td>
+                                        <td>${product.factory}</td>
+                                        <td>
+                                            <a href="/admin/product/detail/${product.id}"
+                                               type="button" class="btn btn-outline-success">
+                                                View
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <a href="/admin/product/update/${product.id}" type="button"
+                                               class="btn btn-outline-warning">
+                                                Update
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <a href="/admin/product/delete/${product.id}" type="button"
+                                               class="btn btn-outline-danger">
+                                                Delete
+                                            </a>
+                                        </td>
+                                    </tr>
+                                </c:forEach>
                                 </tbody>
                             </table>
                         </div>

@@ -19,11 +19,12 @@ public class UploadService {
     }
 
     public String handleSaveUpLoadFile(MultipartFile file, String targetFolder) {
+//        System.out.println(">>> Check file service: " + file.getOriginalFilename());
         // Don't Upload File If empty
-        if (!file.isEmpty()) {
+        if (file.isEmpty()) {
             return "";
         }
-        // Else
+
         String rootPath = this.servletContext.getRealPath("/resources/images");
         String fileName = "";
         try {

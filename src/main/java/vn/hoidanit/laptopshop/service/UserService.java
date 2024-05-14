@@ -22,15 +22,15 @@ public class UserService {
         return "Hello from service!";
     }
 
-    public List<User> handleGetAllUsers() {
+    public List<User> handleFetchAllUsers() {
         return this.userRepository.findAll();
     }
 
-    public List<User> handleGetAllUsersByEmail(String email) {
+    public List<User> handleFetchAllUsersByEmail(String email) {
         return this.userRepository.findByEmail(email);
     }
 
-    public User handleGetUserById(long id) {
+    public User handleFetchUserById(long id) {
         return this.userRepository.findById(id);
     }
 
@@ -38,11 +38,11 @@ public class UserService {
         return this.userRepository.save(user);
     }
 
-    public void deleteUser(long id) {
+    public void handleDeleteUser(long id) {
         this.userRepository.deleteById(id);
     }
 
-    public Role handleGetRoleByName(String name) {
+    public Role handleFetchRoleByName(String name) {
         return this.roleRepository.findByName(name);
     }
 }

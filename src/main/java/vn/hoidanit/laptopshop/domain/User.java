@@ -12,12 +12,12 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @NotNull
-    @Email(message = "Email is not valid", regexp = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[azA-Z0-9.-]+$")
+    @Email(message = "Email is not valid", regexp = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$")
+    @NotEmpty(message = "Email can not be empty")
     private String email;
 
     @NotNull
-    @Size(min = 2, message = "Must have at least 2 characters")
+    @Size(min = 2, message = "Must have more than 2 characters")
     private String password;
 
     @NotNull

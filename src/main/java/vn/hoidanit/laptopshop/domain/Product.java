@@ -1,6 +1,10 @@
 package vn.hoidanit.laptopshop.domain;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 import java.util.List;
 
@@ -11,15 +15,31 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @NotNull
+    @Size(min = 1, message = "Name can not be blank.")
     private String name;
+
+    @NotNull
+//    @Min(value = 1, message = "Price must larger than 0")
+    @DecimalMin(value = "0", inclusive = false, message = "Price must larger than 0")
     private double price;
-    private String image;
+
+    @NotNull
+    @Size(min = 1, message = "Detail Description can not be blank.")
     private String detailDesc;
+
+    @NotNull
+    @Size(min = 1, message = "Short Description can not be blank.")
     private String shortDesc;
+
+    @NotNull
+    @Min(value = 1, message = "Quantity must larger than 0")
     private long quantity;
+
     private long sold;
     private String factory;
     private String target;
+    private String image;
 
     public Product() {
     }

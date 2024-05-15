@@ -5,10 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import vn.hoidanit.laptopshop.domain.Product;
 import vn.hoidanit.laptopshop.domain.User;
@@ -16,6 +13,7 @@ import vn.hoidanit.laptopshop.service.ProductService;
 import vn.hoidanit.laptopshop.service.UploadService;
 
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class ProductController {
@@ -65,6 +63,70 @@ public class ProductController {
         this.productService.handleSaveProduct(hoidanit);
 
         // Redirect to user table
+        return "redirect:/admin/product";
+    }
+
+    @GetMapping("/admin/product/detail/{id}")
+    public String getProductDetailPage(@PathVariable long id, Model model) {
+        Product product = productService.handleFetchProductById(id);
+        model.addAttribute("product", product);
+        return "admin/product/detail";
+    }
+
+    @GetMapping("/admin/product/update/{id}")
+    public String getUpdateProductPage(@PathVariable long id, Model model) {
+        Product currentProduct = productService.handleFetchProductById(id);
+//        System.out.println(currentProduct.get());
+        model.addAttribute("product", currentProduct);
+        return "/admin/product/update";
+    }
+
+    @PostMapping("/admin/product/update")
+    public String handleUpdateUser(Model model,
+                                   @ModelAttribute("product") @Valid Product product,
+                                   BindingResult newProductBindingResult,
+                                   @RequestParam("hoidanitFile") MultipartFile file) {
+//        System.out.println(product.toString());
+//        System.out.println(product.getId());
+
+        //      Return this form if errors appeared while validating
+        if (newProductBindingResult.hasErrors()) {
+            return "/admin/product/update";
+        }
+
+        Product currentProduct = productService.handleFetchProductById(product.getId());
+//        System.out.println(currentProduct.toString());
+        if (currentProduct != null) {
+//          Save product source image if file isn't empty
+            if (!file.isEmpty()) {
+                String img = this.uploadService.handleSaveUpLoadFile(file, "product");
+                currentProduct.setImage(img);
+            }
+
+            currentProduct.setName(product.getName());
+            currentProduct.setPrice(product.getPrice());
+            currentProduct.setShortDesc(product.getShortDesc());
+            currentProduct.setDetailDesc(product.getDetailDesc());
+            currentProduct.setQuantity(product.getQuantity());
+            currentProduct.setFactory(product.getFactory());
+            currentProduct.setTarget(product.getTarget());
+
+            this.productService.handleSaveProduct(currentProduct);
+        }
+
+        return "redirect:/admin/product";
+    }
+
+    @GetMapping("admin/product/delete/{id}")
+    public String getDeleteProductPage(@PathVariable long id, Model model) {
+        model.addAttribute("id", id);
+        model.addAttribute("newProduct", new Product());
+        return "/admin/product/delete";
+    }
+
+    @PostMapping("admin/product/delete")
+    public String handleDeleteUserPage(@ModelAttribute("newProduct") Product product, Model model) {
+        this.productService.handleDeleteProduct(product.getId());
         return "redirect:/admin/product";
     }
 

@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
     <meta name="description" content="Hỏi Dân IT - Dự án laptopshop"/>
     <meta name="author" content="Hỏi Dân IT"/>
-    <title>User Detail - Laptop Shop</title>
+    <title>Product Detail - Laptop Shop</title>
     <link href="/css/styles.css" rel="stylesheet"/>
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
 </head>
@@ -26,50 +26,63 @@
     <div id="layoutSidenav_content">
         <main>
             <div class="container-fluid px-4">
-                <h1 class="mt-4">Manage Users</h1>
+                <h1 class="mt-4">Manage Products</h1>
                 <ol class="breadcrumb mb-4">
                     <li class="breadcrumb-item">
                         <a href="/admin">Dashboard</a>
                     </li>
                     <li class="breadcrumb-item">
-                        <a href="/admin/user">Table User</a>
+                        <a href="/admin/product">Table Products</a>
                     </li>
-                    <li class="breadcrumb-item active">User Detail</li>
+                    <li class="breadcrumb-item active">Product Detail</li>
                 </ol>
                 <div class="mt-5">
                     <div class="row">
                         <div class="col-12 mx-auto">
                             <div class="d-flex justify-content-between">
-                                <h3>User detail</h3>
+                                <h3>Product detail</h3>
                             </div>
                             <hr/>
+                            <div class="card" style="width: 40%; margin-left: 10%">
+                                <img class="card-img-top" src="/images/product/${product.image}"
+                                     alt="Card image Cap">
+                            </div>
                             <div class="card" style="width: 60%;">
                                 <div class="card-header">
-                                    User Information
+                                    Product Information
                                 </div>
                                 <ul class="list-group list-group-flush">
                                     <li class="list-group-item d-none">
-                                        Id: ${user.id}
+                                        Id: ${product.id}
                                     </li>
                                     <li class="list-group-item">
-                                        Role: ${user.role.name}
+                                        Name: ${product.name}
                                     </li>
                                     <li class="list-group-item">
-                                        Email: ${user.email}
+                                        Factory: ${product.factory}
                                     </li>
                                     <li class="list-group-item">
-                                        FullName: ${user.fullName}
+                                        Target: ${product.target}
                                     </li>
                                     <li class="list-group-item">
-                                        Phone: ${user.phone}
+                                        Email: ${product.price}
                                     </li>
                                     <li class="list-group-item">
-                                        Address: ${user.address}
+                                        Short Description: ${product.shortDesc}
+                                    </li>
+                                    <li class="list-group-item">
+                                        Detail Description: ${product.detailDesc}
+                                    </li>
+                                    <li class="list-group-item">
+                                        Quantity: ${product.quantity}
+                                    </li>
+                                    <li class="list-group-item">
+                                        Sold: ${product.sold}
                                     </li>
                                 </ul>
                             </div>
                             <div class="mt-3 mb-3">
-                                <a href="/admin/user" type="button" class="btn btn-outline-success">
+                                <a href="/admin/product" type="button" class="btn btn-outline-success">
                                     Back
                                 </a>
                             </div>

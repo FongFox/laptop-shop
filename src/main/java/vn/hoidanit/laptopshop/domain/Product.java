@@ -26,6 +26,7 @@ public class Product {
 
     @NotNull
     @Size(min = 1, message = "Detail Description can not be blank.")
+    @Column(columnDefinition = "MEDIUMTEXT")
     private String detailDesc;
 
     @NotNull

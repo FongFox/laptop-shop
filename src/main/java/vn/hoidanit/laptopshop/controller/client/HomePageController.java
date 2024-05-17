@@ -22,4 +22,6 @@ public class HomePageController {
         model.addAttribute("products", products);
         return "client/homepage/show";
     }
+
+
 }

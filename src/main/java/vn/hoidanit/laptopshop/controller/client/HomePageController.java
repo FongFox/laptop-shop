@@ -1,22 +1,29 @@
 package vn.hoidanit.laptopshop.controller.client;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import vn.hoidanit.laptopshop.domain.Product;
+import vn.hoidanit.laptopshop.domain.User;
 import vn.hoidanit.laptopshop.domain.dto.RegisterDTO;
 import vn.hoidanit.laptopshop.service.ProductService;
+import vn.hoidanit.laptopshop.service.UserService;
 
 import java.util.List;
 
 @Controller
 public class HomePageController {
     private final ProductService productService;
+    private final UserService userService;
+    private final PasswordEncoder passwordEncoder;
 
-    public HomePageController(ProductService productService) {
+    public HomePageController(ProductService productService, UserService userService, PasswordEncoder passwordEncoder) {
         this.productService = productService;
+        this.userService = userService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @GetMapping("/")
@@ -34,6 +41,27 @@ public class HomePageController {
 
     @PostMapping("/register")
     public String handleRegister(@ModelAttribute("registerUser") RegisterDTO registerDTO) {
-        return "client/auth/register";
+        User user = this.userService.registerDTOtoUser(registerDTO);
+//        System.out.println(user);
+
+        String hashPassword = this.passwordEncoder.encode(user.getPassword());
+
+        // Re-assign with new values
+        user.setPassword(hashPassword);
+        user.setRole(this.userService.handleFetchRoleByName("USER"));
+
+        // Save user
+        this.userService.handleSaveUser(user);
+
+        // Redirect to user table
+        return "redirect:/login";
+
+//        return "client/auth/register";
+    }
+
+    @GetMapping("/login")
+    public String getLoginPage(Model model) {
+//        model.addAttribute("loginUser", new RegisterDTO());
+        return "client/auth/login";
     }
 }

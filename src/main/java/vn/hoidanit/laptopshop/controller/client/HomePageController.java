@@ -78,4 +78,10 @@ public class HomePageController {
 //        model.addAttribute("loginUser", new RegisterDTO());
         return "client/auth/login";
     }
+
+    @PostMapping("/login")
+    public String handleLogin(Model model) {
+//        model.addAttribute("loginUser", new RegisterDTO());
+        return "client/auth/login";
+    }
 }

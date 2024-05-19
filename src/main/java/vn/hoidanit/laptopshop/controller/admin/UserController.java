@@ -39,7 +39,7 @@ public class UserController {
     @GetMapping("/admin/user/create")
     public String getCreateUserPage(Model model) {
         model.addAttribute("newUser", new User());
-        return "/admin/user/create";
+        return "admin/user/create";
     }
 
     @PostMapping("/admin/user/create")
@@ -54,7 +54,7 @@ public class UserController {
 //        }
 
         if (newUserBindingResult.hasErrors()) {
-            return "/admin/user/create";
+            return "admin/user/create";
         }
 
         String avatar = this.uploadService.handleSaveUpLoadFile(file, "avatar");
@@ -85,7 +85,7 @@ public class UserController {
     public String getUpdateUserPage(@PathVariable long id, Model model) {
         User currentUser = userService.handleFetchUserById(id);
         model.addAttribute("user", currentUser);
-        return "/admin/user/update";
+        return "admin/user/update";
     }
 
     @PostMapping("/admin/user/update")
@@ -106,7 +106,7 @@ public class UserController {
     public String getDeleteUserPage(@PathVariable long id, Model model) {
         model.addAttribute("id", id);
         model.addAttribute("newUser", new User());
-        return "/admin/user/delete";
+        return "admin/user/delete";
     }
 
     @PostMapping("admin/user/delete")

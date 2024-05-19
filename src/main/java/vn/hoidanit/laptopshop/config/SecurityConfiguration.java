@@ -57,13 +57,15 @@ public class SecurityConfiguration {
                         .permitAll()
 
                         .requestMatchers("/admin/**").hasRole("ADMIN")
-
                         .anyRequest().authenticated())
+
                 .formLogin(formLogin -> formLogin
                         .loginPage("/login")
                         .failureUrl("/login?error")
                         .successHandler(customSuccessHandler())
-                        .permitAll());
+                        .permitAll())
+
+                .exceptionHandling(ex -> ex.accessDeniedPage("/access-deny"));
 
         return http.build();
     }

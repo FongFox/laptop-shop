@@ -1,5 +1,7 @@
 package vn.hoidanit.laptopshop.controller.client;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -30,9 +32,11 @@ public class HomePageController {
     }
 
     @GetMapping("/")
-    public String getHomePage(Model model) {
+    public String getHomePage(Model model, HttpServletRequest request) {
         List<Product> products = productService.handleFetchAllProducts();
         model.addAttribute("products", products);
+        HttpSession session = request.getSession(false);
+//        System.out.println(">>> Check session fullName: " + session.getAttribute("fullName"));
         return "client/homepage/show";
     }
 

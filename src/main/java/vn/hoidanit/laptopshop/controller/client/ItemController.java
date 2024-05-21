@@ -8,8 +8,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import vn.hoidanit.laptopshop.domain.Cart;
+import vn.hoidanit.laptopshop.domain.CartDetail;
 import vn.hoidanit.laptopshop.domain.Product;
+import vn.hoidanit.laptopshop.domain.User;
 import vn.hoidanit.laptopshop.service.ProductService;
+
+import java.util.List;
 
 @Controller
 public class ItemController {
@@ -39,7 +44,24 @@ public class ItemController {
     }
 
     @GetMapping("/cart")
-    public String getCartPage() {
+    public String getCartPage(Model model, HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        User tempUser = new User();
+        long userId = (long) session.getAttribute("id");
+        tempUser.setId(userId);
+
+        Cart cart = this.productService.handleFetchByUser(tempUser);
+
+        List<CartDetail> cartDetails = cart.getCartDetails();
+
+        double totalPrice = 0;
+        for (CartDetail cartDetail : cartDetails) {
+            totalPrice += cartDetail.getPrice() * cartDetail.getQuantity();
+        }
+
+        model.addAttribute("cartDetails", cartDetails);
+        model.addAttribute("totalPrice", totalPrice);
+
         return "client/cart/show";
     }
 }

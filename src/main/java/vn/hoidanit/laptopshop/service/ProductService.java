@@ -83,6 +83,9 @@ public class ProductService {
                 }
             }
         }
+    }
 
+    public Cart handleFetchByUser(User user) {
+        return this.cartRepository.findByUser(user);
     }
 }

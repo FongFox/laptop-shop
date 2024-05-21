@@ -62,7 +62,7 @@ public class SecurityConfiguration {
                                 DispatcherType.INCLUDE)
                         .permitAll()
 
-                        .requestMatchers("/", "/login", "/product/**",
+                        .requestMatchers("/", "/login", "/register", "/product/**",
                                 "/client/**", "/css/**", "/js/**",
                                 "/images/**")
                         .permitAll()
@@ -76,7 +76,7 @@ public class SecurityConfiguration {
                         .maximumSessions(1)
                         .maxSessionsPreventsLogin(false))
                 //.logout(logout-> logout.deleteCookies("JSESSIONID").invalidateHttpSession(true)
-                
+
                 .rememberMe((rememberMe) -> rememberMe.rememberMeServices(rememberMeServices()))
 
                 .formLogin(formLogin -> formLogin

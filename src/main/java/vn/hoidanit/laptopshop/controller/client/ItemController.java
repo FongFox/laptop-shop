@@ -33,8 +33,13 @@ public class ItemController {
         HttpSession session = request.getSession(false);
         String email = session.getAttribute("email").toString();
 
-        this.productService.handeSaveProductToCart(email, productId);
+        this.productService.handeSaveProductToCart(email, productId, session);
 
         return "redirect:/";
+    }
+
+    @GetMapping("/cart")
+    public String getCartPage() {
+        return "client/cart/show";
     }
 }

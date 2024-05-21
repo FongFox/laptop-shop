@@ -85,15 +85,19 @@
                                                     <a href="/product/${product.id}">${product.name}</a>
                                                 </h4>
                                                 <p style="font-size: 13px;">${product.shortDesc}</p>
-                                                <div class="d-flex flex-lg-wrap">
+                                                <div class="d-flex flex-lg-wrap justify-content-center">
                                                     <p style="font-size: 15px; text-align: center; width: 100%"
                                                        class="text-dark fw-bold mb-3">
                                                         <fmt:formatNumber type="number" value="${product.price}"/> VND
                                                     </p>
-                                                    <a href="#"
-                                                       class="mx-auto btn border border-secondary rounded-pill px-3 text-primary">
-                                                        <i class="fa fa-shopping-bag me-2 text-primary"></i>
-                                                        Add to cart</a>
+                                                    <form method="post" action="/add-product-to-cart/${product.id}">
+                                                        <input type="hidden" name="${_csrf.parameterName}"
+                                                               value="${_csrf.token}"/>
+                                                        <button class="mx-auto btn border border-secondary rounded-pill px-3 text-primary">
+                                                            <i class="fa fa-shopping-bag me-2 text-primary"></i>
+                                                            Add to cart
+                                                        </button>
+                                                    </form>
                                                 </div>
                                             </div>
                                         </div>

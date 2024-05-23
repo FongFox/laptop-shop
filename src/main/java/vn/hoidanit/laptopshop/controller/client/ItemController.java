@@ -62,6 +62,7 @@ public class ItemController {
 
         model.addAttribute("cartDetails", cartDetails);
         model.addAttribute("totalPrice", totalPrice);
+        model.addAttribute("cart", cart);
 
         return "client/cart/show";
     }
@@ -113,5 +114,5 @@ public class ItemController {
 
         return "redirect:/";
     }
-    
+
 }

@@ -3,10 +3,14 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <title>Cart - Laptop Shop</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8">
+    <title> Giỏ hàng - Laptopshop</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="" name="keywords">
+    <meta content="" name="description">
+
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -15,7 +19,8 @@
 
     <!-- Icon Font Stylesheet -->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css"/>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css"
+          rel="stylesheet">
 
     <!-- Libraries Stylesheet -->
     <link href="/client/lib/lightbox/css/lightbox.min.css" rel="stylesheet">
@@ -28,6 +33,7 @@
     <!-- Template Stylesheet -->
     <link href="/client/css/style.css" rel="stylesheet">
 </head>
+
 <body>
 
 <!-- Spinner Start -->
@@ -37,11 +43,9 @@
 </div>
 <!-- Spinner End -->
 
-
 <!-- Header start -->
 <jsp:include page="../layout/header.jsp"/>
 <!-- Header End -->
-
 
 <!-- Cart Page Start -->
 <div class="container-fluid py-5">
@@ -49,10 +53,8 @@
         <div class="mb-5 mt-5">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item">
-                        <a href="/">Home</a>
-                    </li>
-                    <li class="breadcrumb-item active">Cart</li>
+                    <li class="breadcrumb-item"><a href="/">Home</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Chi Tiết Giỏ Hàng</li>
                 </ol>
             </nav>
         </div>
@@ -60,15 +62,22 @@
             <table class="table">
                 <thead>
                 <tr>
-                    <th scope="col">Products</th>
-                    <th scope="col">Name</th>
-                    <th scope="col">Price</th>
-                    <th scope="col">Quantity</th>
-                    <th scope="col">Total</th>
-                    <th scope="col">Handle</th>
+                    <th scope="col">Sản phẩm</th>
+                    <th scope="col">Tên</th>
+                    <th scope="col">Giá cả</th>
+                    <th scope="col">Số lượng</th>
+                    <th scope="col">Thành tiền</th>
+                    <th scope="col">Xử lý</th>
                 </tr>
                 </thead>
                 <tbody>
+                <c:if test="${ empty cartDetails}">
+                    <tr>
+                        <td colspan="6">
+                            Không có sản phẩm trong giỏ hàng
+                        </td>
+                    </tr>
+                </c:if>
                 <c:forEach var="cartDetail" items="${cartDetails}">
                     <tr>
                         <th scope="row">
@@ -79,11 +88,15 @@
                             </div>
                         </th>
                         <td>
-                            <p class="mb-0 mt-4">${cartDetail.product.name}</p>
+                            <p class="mb-0 mt-4">
+                                <a href="/product/${cartDetail.product.id}" target="_blank">
+                                        ${cartDetail.product.name}
+                                </a>
+                            </p>
                         </td>
                         <td>
                             <p class="mb-0 mt-4">
-                                <fmt:formatNumber type="number" value="${cartDetail.product.price}"/> VND
+                                <fmt:formatNumber type="number" value="${cartDetail.price}"/> đ
                             </p>
                         </td>
                         <td>
@@ -93,8 +106,11 @@
                                         <i class="fa fa-minus"></i>
                                     </button>
                                 </div>
-                                <input type="text" class="form-control form-control-sm text-center border-0"
-                                       value="${cartDetail.quantity}">
+                                <input type="text"
+                                       class="form-control form-control-sm text-center border-0"
+                                       value="${cartDetail.quantity}"
+                                       data-cart-detail-id="${cartDetail.id}"
+                                       data-cart-detail-price="${cartDetail.price}">
                                 <div class="input-group-btn">
                                     <button class="btn btn-sm btn-plus rounded-circle bg-light border">
                                         <i class="fa fa-plus"></i>
@@ -103,9 +119,9 @@
                             </div>
                         </td>
                         <td>
-                            <p class="mb-0 mt-4">
+                            <p class="mb-0 mt-4" data-cart-detail-id="${cartDetail.id}">
                                 <fmt:formatNumber type="number"
-                                                  value="${cartDetail.product.price * cartDetail.quantity}"/> VND
+                                                  value="${cartDetail.price * cartDetail.quantity}"/> VND
                             </p>
                         </td>
                         <td>
@@ -119,46 +135,47 @@
                 </tbody>
             </table>
         </div>
-        <%-- Total --%>
-        <div class="mt-5 row g-4 justify-content-start">
-            <div class="col-12 col-md-8">
-                <div class="bg-light rounded">
-                    <div class="p-4">
-                        <h1 class="display-6 mb-4">Cart <span class="fw-normal">Total</span></h1>
-                        <div class="d-flex justify-content-between mb-4">
-                            <h5 class="mb-0 me-4">Subtotal:</h5>
-                            <p class="mb-0">
+        <c:if test="${not empty cartDetails}">
+            <div class="mt-5 row g-4 justify-content-start">
+                <div class="col-12 col-md-8">
+                    <div class="bg-light rounded">
+                        <div class="p-4">
+                            <h1 class="display-6 mb-4">Thông Tin <span class="fw-normal">Đơn Hàng</span>
+                            </h1>
+                            <div class="d-flex justify-content-between mb-4">
+                                <h5 class="mb-0 me-4">Tạm tính:</h5>
+                                <p class="mb-0" data-cart-total-price="${totalPrice}">
+                                    <fmt:formatNumber type="number" value="${totalPrice}"/> VND
+                                </p>
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <h5 class="mb-0 me-4">Phí vận chuyển</h5>
+                                <div class="">
+                                    <p class="mb-0">0 VND</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="py-4 mb-4 border-top border-bottom d-flex justify-content-between">
+                            <h5 class="mb-0 ps-4 me-4">Tổng số tiền</h5>
+                            <p class="mb-0 pe-4" data-cart-total-price="${totalPrice}">
                                 <fmt:formatNumber type="number" value="${totalPrice}"/> VND
                             </p>
                         </div>
-                        <div class="d-flex justify-content-between">
-                            <h5 class="mb-0 me-4">Shipping</h5>
-                            <div class="">
-                                <p class="mb-0">0 VND</p>
-                            </div>
-                        </div>
+                        <button class="btn border-secondary rounded-pill px-4 py-3 text-primary text-uppercase mb-4 ms-4"
+                                type="button">
+                            Xác nhận đặt hàng
+                        </button>
                     </div>
-                    <div class="py-4 mb-4 border-top border-bottom d-flex justify-content-between">
-                        <h5 class="mb-0 ps-4 me-4">Total</h5>
-                        <p class="mb-0 pe-4">
-                            <fmt:formatNumber type="number" value="${totalPrice}"/> VND
-                        </p>
-                    </div>
-                    <button class="btn border-secondary rounded-pill px-4 py-3 text-primary text-uppercase mb-4 ms-4"
-                            type="button">Proceed Checkout
-                    </button>
                 </div>
             </div>
-        </div>
+        </c:if>
     </div>
 </div>
 <!-- Cart Page End -->
 
-
 <!-- Footer Start -->
 <jsp:include page="../layout/footer.jsp"/>
 <!-- Footer End -->
-
 
 <!-- Back to Top -->
 <a href="#" class="btn btn-primary border-3 border-primary rounded-circle back-to-top"><i
@@ -176,4 +193,5 @@
 <!-- Template Javascript -->
 <script src="/client/js/main.js"></script>
 </body>
+
 </html>

@@ -2,13 +2,8 @@ package vn.hoidanit.laptopshop.service;
 
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Service;
-import vn.hoidanit.laptopshop.domain.Cart;
-import vn.hoidanit.laptopshop.domain.CartDetail;
-import vn.hoidanit.laptopshop.domain.Product;
-import vn.hoidanit.laptopshop.domain.User;
-import vn.hoidanit.laptopshop.repository.CartDetailsRepository;
-import vn.hoidanit.laptopshop.repository.CartRepository;
-import vn.hoidanit.laptopshop.repository.ProductRepository;
+import vn.hoidanit.laptopshop.domain.*;
+import vn.hoidanit.laptopshop.repository.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -19,15 +14,20 @@ public class ProductService {
     private final CartRepository cartRepository;
     private final CartDetailsRepository cartDetailsRepository;
     private final UserService userService;
+    private final OrderRepository orderRepository;
+    private final OrderDetailRepository orderDetailRepository;
 
     public ProductService(ProductRepository productRepository,
                           CartRepository cartRepository,
                           CartDetailsRepository cartDetailsRepository,
-                          UserService userService) {
+                          UserService userService, OrderRepository orderRepository,
+                          OrderDetailRepository orderDetailRepository) {
         this.productRepository = productRepository;
         this.cartRepository = cartRepository;
         this.cartDetailsRepository = cartDetailsRepository;
         this.userService = userService;
+        this.orderRepository = orderRepository;
+        this.orderDetailRepository = orderDetailRepository;
     }
 
     public List<Product> handleFetchAllProducts() {
@@ -117,6 +117,43 @@ public class ProductService {
                 CartDetail currentCartDetail = cdOptional.get();
                 currentCartDetail.setQuantity(cartDetail.getQuantity());
                 this.cartDetailsRepository.save(currentCartDetail);
+            }
+        }
+    }
+
+    public void handlePlaceOrder(User user, HttpSession session, String receiverName,
+                                 String receiverAddress, String receiverPhone) {
+//        Create Order
+        Order order = new Order();
+        order.setUser(user);
+        order.setReceiverName(receiverName);
+        order.setReceiverAddress(receiverAddress);
+        order.setReceiverPhone(receiverPhone);
+//        Save order (by using order repository)
+        order = this.orderRepository.save(order);
+//        Create order detail
+//        Step 1: get cart by user
+        Cart cart = this.cartRepository.findByUser(user);
+        if (cart != null) {
+            List<CartDetail> cartDetails = cart.getCartDetails();
+            if (cartDetails != null) {
+                for (CartDetail cartDetail : cartDetails) {
+                    OrderDetail orderDetail = new OrderDetail();
+                    orderDetail.setOrder(order);
+                    orderDetail.setProduct(cartDetail.getProduct());
+                    orderDetail.setPrice(cartDetail.getPrice());
+                    orderDetail.setQuantity(cartDetail.getQuantity());
+                    this.orderDetailRepository.save(orderDetail);
+                }
+//              Step 2: delete cartDetail and cart
+                for (CartDetail cartDetail : cartDetails) {
+                    this.cartDetailsRepository.deleteById(cartDetail.getId());
+                }
+//              Step 2.1: Delete cart
+                this.cartRepository.deleteById(cart.getId());
+//              Step 3: Update session
+                int defaultCartSum = 0;
+                session.setAttribute("sum", defaultCartSum);
             }
         }
     }

@@ -1,5 +1,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -125,9 +126,12 @@
                             </p>
                         </td>
                         <td>
-                            <button class="btn btn-md rounded-circle bg-light border mt-4">
-                                <i class="fa fa-times text-danger"></i>
-                            </button>
+                            <form method="post" action="/delete-cart-product/${cartDetail.id}">
+                                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                                <button class="btn btn-md rounded-circle bg-light border mt-4">
+                                    <i class="fa fa-times text-danger"></i>
+                                </button>
+                            </form>
                         </td>
 
                     </tr>

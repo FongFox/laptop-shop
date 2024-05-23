@@ -6,7 +6,7 @@ import vn.hoidanit.laptopshop.domain.Cart;
 import vn.hoidanit.laptopshop.domain.CartDetail;
 import vn.hoidanit.laptopshop.domain.Product;
 import vn.hoidanit.laptopshop.domain.User;
-import vn.hoidanit.laptopshop.repository.CartDetailRepository;
+import vn.hoidanit.laptopshop.repository.CartDetailsRepository;
 import vn.hoidanit.laptopshop.repository.CartRepository;
 import vn.hoidanit.laptopshop.repository.ProductRepository;
 
@@ -17,16 +17,16 @@ import java.util.Optional;
 public class ProductService {
     private final ProductRepository productRepository;
     private final CartRepository cartRepository;
-    private final CartDetailRepository cartDetailRepository;
+    private final CartDetailsRepository cartDetailsRepository;
     private final UserService userService;
 
     public ProductService(ProductRepository productRepository,
                           CartRepository cartRepository,
-                          CartDetailRepository cartDetailRepository,
+                          CartDetailsRepository cartDetailsRepository,
                           UserService userService) {
         this.productRepository = productRepository;
         this.cartRepository = cartRepository;
-        this.cartDetailRepository = cartDetailRepository;
+        this.cartDetailsRepository = cartDetailsRepository;
         this.userService = userService;
     }
 
@@ -63,7 +63,7 @@ public class ProductService {
             if (tempProduct.isPresent()) {
                 Product product = tempProduct.get();
 //              Check if product had been added to cart ?
-                CartDetail oldDetail = this.cartDetailRepository.findByCartAndProduct(cart, product);
+                CartDetail oldDetail = this.cartDetailsRepository.findByCartAndProduct(cart, product);
                 if (oldDetail == null) {
 //                  Save cart_detail
                     CartDetail newDetail = new CartDetail();
@@ -71,7 +71,7 @@ public class ProductService {
                     newDetail.setProduct(product);
                     newDetail.setPrice(product.getPrice());
                     newDetail.setQuantity(1);
-                    this.cartDetailRepository.save(newDetail);
+                    this.cartDetailsRepository.save(newDetail);
 //                  Update card sum
                     int sum = cart.getSum() + 1;
                     cart.setSum(sum);
@@ -79,7 +79,7 @@ public class ProductService {
                     session.setAttribute("sum", sum);
                 } else {
                     oldDetail.setQuantity(oldDetail.getQuantity() + 1);
-                    this.cartDetailRepository.save(oldDetail);
+                    this.cartDetailsRepository.save(oldDetail);
                 }
             }
         }
@@ -87,5 +87,26 @@ public class ProductService {
 
     public Cart handleFetchByUser(User user) {
         return this.cartRepository.findByUser(user);
+    }
+
+    public void handleDeleteProductFromCart(long cardDetailId, HttpSession session) {
+        int defaultCartSum = 0;
+        Optional<CartDetail> dbCardDetail = this.cartDetailsRepository.findById(cardDetailId);
+        if (dbCardDetail.isPresent()) {
+            CartDetail tempCartDetail = dbCardDetail.get();
+            Cart dbCart = this.cartRepository.findByCartDetails(tempCartDetail);
+            int currentDBCartSum = dbCart.getSum();
+//        System.out.println(dbCart.toString());
+//      Delete card details from database
+            this.cartDetailsRepository.deleteById(cardDetailId);
+            if (currentDBCartSum == 1) {
+                this.cartRepository.delete(dbCart);
+                session.setAttribute("sum", defaultCartSum);
+            } else {
+                currentDBCartSum -= 1;
+                dbCart.setSum(currentDBCartSum);
+                session.setAttribute("sum", currentDBCartSum);
+            }
+        }
     }
 }

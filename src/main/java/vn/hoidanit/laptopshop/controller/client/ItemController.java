@@ -28,7 +28,7 @@ public class ItemController {
 
     @GetMapping("/product/{id}")
     public String getProductPage(Model model, @PathVariable long id) {
-        Product pr = this.productService.fetchProductById(id).get();
+        Product pr = this.productService.handleFetchProductById(id);
         model.addAttribute("product", pr);
         model.addAttribute("id", id);
         return "client/product/detail";
@@ -41,7 +41,7 @@ public class ItemController {
         long productId = id;
         String email = (String) session.getAttribute("email");
 
-        this.productService.handleAddProductToCart(email, productId, session);
+        this.productService.handeSaveProductToCart(email, productId, session);
 
         return "redirect:/";
     }
@@ -53,7 +53,7 @@ public class ItemController {
         long id = (long) session.getAttribute("id");
         currentUser.setId(id);
 
-        Cart cart = this.productService.fetchByUser(currentUser);
+        Cart cart = this.productService.handleFetchByUser(currentUser);
 
         List<CartDetail> cartDetails = cart == null ? new ArrayList<CartDetail>() : cart.getCartDetails();
 
@@ -66,5 +66,13 @@ public class ItemController {
         model.addAttribute("totalPrice", totalPrice);
 
         return "client/cart/show";
+    }
+
+    @PostMapping("/delete-cart-product/{id}")
+    public String handleDeleteProductFromCart(@PathVariable long id, HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        this.productService.handleDeleteProductFromCart(id, session);
+//      Redirect to cart page
+        return "redirect:/cart";
     }
 }

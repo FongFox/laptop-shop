@@ -29,7 +29,9 @@ public class ItemController {
     }
 
     @GetMapping("/products")
-    public String getProductPage(Model model, @RequestParam("page") Optional<String> pageOptional) {
+    public String getProductPage(Model model,
+                                 @RequestParam("page") Optional<String> pageOptional,
+                                 @RequestParam("name") Optional<String> nameOptional) {
         int page = 1;
 
         try {
@@ -42,8 +44,10 @@ public class ItemController {
             // Todo: handle exception
         }
 
+        String name = nameOptional.isPresent() ? nameOptional.get() : "";
+
         Pageable pageable = PageRequest.of(page - 1, 3);
-        Page<Product> products = productService.handleFetchAllProducts(pageable);
+        Page<Product> products = productService.handleFetchAllProducts(pageable, name);
         List<Product> productList = products.getContent();
 
         model.addAttribute("products", productList);

@@ -44,9 +44,8 @@ public class ItemController {
             // Todo: handle exception
         }
 
-        String name = nameOptional.isPresent() ? nameOptional.get() : "";
-
         Pageable pageable = PageRequest.of(page - 1, 3);
+        String name = nameOptional.isPresent() ? nameOptional.get() : "";
         Page<Product> products = productService.handleFetchAllProducts(pageable, name);
         List<Product> productList = products.getContent();
 

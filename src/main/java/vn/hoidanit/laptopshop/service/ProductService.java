@@ -3,10 +3,10 @@ package vn.hoidanit.laptopshop.service;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import vn.hoidanit.laptopshop.domain.*;
 import vn.hoidanit.laptopshop.repository.*;
+import vn.hoidanit.laptopshop.service.specification.ProductSpecs;
 
 import java.util.List;
 import java.util.Optional;
@@ -33,16 +33,12 @@ public class ProductService {
         this.orderDetailRepository = orderDetailRepository;
     }
 
-    private Specification<Product> nameLike(String name) {
-        return (root, query, criteriaBuilder) -> criteriaBuilder.like(root.get(Product_.NAME), "%" + name + "%");
-    }
-
     public Page<Product> handleFetchAllProducts(Pageable pageable) {
         return this.productRepository.findAll(pageable);
     }
 
     public Page<Product> handleFetchAllProducts(Pageable pageable, String name) {
-        return this.productRepository.findAll(this.nameLike(name), pageable);
+        return this.productRepository.findAll(ProductSpecs.nameLike(name), pageable);
     }
 
     public Product handleFetchProductById(long id) {

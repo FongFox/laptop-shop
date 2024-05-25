@@ -1,19 +1,19 @@
 package vn.hoidanit.laptopshop.controller.admin;
 
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import vn.hoidanit.laptopshop.domain.Product;
-import vn.hoidanit.laptopshop.domain.User;
 import vn.hoidanit.laptopshop.service.ProductService;
 import vn.hoidanit.laptopshop.service.UploadService;
 
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 public class ProductController {
@@ -26,9 +26,11 @@ public class ProductController {
     }
 
     @GetMapping("/admin/product")
-    public String getProductPage(Model model) {
-        List<Product> products = productService.handleFetchAllProducts();
-        model.addAttribute("products", products);
+    public String getProductPage(Model model, @RequestParam("page") int page) {
+        Pageable pageable = PageRequest.of(page - 1, 4);
+        Page<Product> products = productService.handleFetchAllProducts(pageable);
+        List<Product> productList = products.getContent();
+        model.addAttribute("products", productList);
         return "admin/product/show";
     }
 

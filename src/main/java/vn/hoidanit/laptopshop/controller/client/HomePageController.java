@@ -37,9 +37,9 @@ public class HomePageController {
 
     @GetMapping("/")
     public String getHomePage(Model model, HttpServletRequest request) {
-        List<Product> products = productService.handleFetchAllProducts();
-        model.addAttribute("products", products);
-        HttpSession session = request.getSession(false);
+//        List<Product> products = productService.handleFetchAllProducts();
+//        model.addAttribute("products", products);
+//        HttpSession session = request.getSession(false);
 //        System.out.println(">>> Check session fullName: " + session.getAttribute("fullName"));
         return "client/homepage/show";
     }

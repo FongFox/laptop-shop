@@ -1,6 +1,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -58,7 +59,9 @@
                                     <tr>
                                         <td>${product.id}</td>
                                         <td>${product.name}</td>
-                                        <td>${product.price}</td>
+                                        <td>
+                                            <fmt:formatNumber type="number" value="${product.price}"/> VND
+                                        </td>
                                         <td>${product.factory}</td>
                                         <td>
                                             <a href="/admin/product/detail/${product.id}"
@@ -82,6 +85,25 @@
                                 </c:forEach>
                                 </tbody>
                             </table>
+                            <%-- Pagination start --%>
+                            <nav aria-label="Page navigation example">
+                                <ul class="pagination justify-content-center">
+                                    <li class="page-item">
+                                        <a class="page-link" href="#" aria-label="Previous">
+                                            <span aria-hidden="true">&laquo;</span>
+                                        </a>
+                                    </li>
+                                    <li class="page-item"><a class="page-link" href="/admin/product?page=1">1</a></li>
+                                    <li class="page-item"><a class="page-link" href="/admin/product?page=2">2</a></li>
+                                    <li class="page-item"><a class="page-link" href="/admin/product?page=3">3</a></li>
+                                    <li class="page-item">
+                                        <a class="page-link" href="#" aria-label="Next">
+                                            <span aria-hidden="true">&raquo;</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </nav>
+                            <%-- Pagination end --%>
                         </div>
                     </div>
                 </div>

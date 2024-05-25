@@ -2,7 +2,11 @@ package vn.hoidanit.laptopshop.controller.client;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -24,8 +28,33 @@ public class ItemController {
         this.productService = productService;
     }
 
+    @GetMapping("/products")
+    public String getProductPage(Model model, @RequestParam("page") Optional<String> pageOptional) {
+        int page = 1;
+
+        try {
+            if (pageOptional.isPresent()) {
+                page = Integer.parseInt(pageOptional.get());
+            }
+            // else => page = 1
+        } catch (Exception e) {
+            // page = 1
+            // Todo: handle exception
+        }
+
+        Pageable pageable = PageRequest.of(page - 1, 3);
+        Page<Product> products = productService.handleFetchAllProducts(pageable);
+        List<Product> productList = products.getContent();
+
+        model.addAttribute("products", productList);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", products.getTotalPages());
+
+        return "client/product/show";
+    }
+
     @GetMapping("/product/{id}")
-    public String getProductPage(Model model, @PathVariable long id) {
+    public String getProductDetailPage(Model model, @PathVariable long id) {
         Product pr = this.productService.handleFetchProductById(id);
         model.addAttribute("product", pr);
         model.addAttribute("id", id);

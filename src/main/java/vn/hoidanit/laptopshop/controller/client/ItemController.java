@@ -1,6 +1,7 @@
 package vn.hoidanit.laptopshop.controller.client;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,28 +32,59 @@ public class ItemController {
     @GetMapping("/products")
     public String getProductPage(Model model,
                                  @RequestParam("page") Optional<String> pageOptional,
-                                 @RequestParam("name") Optional<String> nameOptional) {
+                                 @RequestParam("name") Optional<String> nameOptional,
+                                 @RequestParam("min-price") Optional<String> minOptional,
+                                 @RequestParam("max-price") Optional<String> maxOptional,
+                                 @RequestParam("factory") Optional<String> factoryOptional,
+                                 @RequestParam("price") Optional<String> priceOptional) {
         int page = 1;
-
         try {
             if (pageOptional.isPresent()) {
+                // convert from String to int
                 page = Integer.parseInt(pageOptional.get());
+            } else {
+                // page = 1
             }
-            // else => page = 1
         } catch (Exception e) {
             // page = 1
-            // Todo: handle exception
+            // TODO: handle exception
         }
 
-        Pageable pageable = PageRequest.of(page - 1, 3);
-        String name = nameOptional.isPresent() ? nameOptional.get() : "";
-        Page<Product> products = productService.handleFetchAllProducts(pageable, name);
-        List<Product> productList = products.getContent();
+        Pageable pageable = PageRequest.of(page - 1, 60);
 
-        model.addAttribute("products", productList);
+//        String name = nameOptional.orElse("");
+//        Page<Product> prs = this.productService.fetchProductsWithSpec(pageable, name);
+
+        // case 1
+//        double min = minOptional.map(Double::parseDouble).orElse(0.0);
+//        Page<Product> prs = this.productService.fetchProductsWithSpec(pageable, min);
+
+        // case 2
+//        double max = maxOptional.map(Double::parseDouble).orElse(0.0);
+//        Page<Product> prs = this.productService.fetchProductsWithSpec(pageable, max);
+
+        // case 3
+//        String factory = factoryOptional.orElse("");
+//        Page<Product> prs = this.productService.fetchProductsWithSpec(pageable, factory);
+
+        // case 4
+//        List<String> factory = Arrays.asList(factoryOptional.get().split(","));
+//        Page<Product> prs = this.productService.fetchProductsWithSpec(pageable, factory);
+
+        // case 5
+        String price = priceOptional.isPresent() ? priceOptional.get() : "";
+        Page<Product> prs = this.productService.fetchProductsWithSpec(pageable, price);
+
+        // case 6
+        // List<String> price = Arrays.asList(priceOptional.get().split(","));
+        // Page<Product> prs = this.productService.fetchProductsWithSpec(pageable,
+        // price);
+
+        List<Product> products = prs.getContent();
+
+        model.addAttribute("products", products);
         model.addAttribute("currentPage", page);
-        model.addAttribute("totalPages", products.getTotalPages());
-
+        model.addAttribute("totalPages", prs.getTotalPages());
         return "client/product/show";
     }
 

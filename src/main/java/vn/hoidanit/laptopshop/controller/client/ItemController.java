@@ -52,8 +52,8 @@ public class ItemController {
 
         Pageable pageable = PageRequest.of(page - 1, 60);
 
-//        String name = nameOptional.orElse("");
-//        Page<Product> prs = this.productService.fetchProductsWithSpec(pageable, name);
+        String name = nameOptional.orElse("");
+        Page<Product> prs = this.productService.fetchProductsWithSpec(pageable, name);
 
         // case 1
 //        double min = minOptional.map(Double::parseDouble).orElse(0.0);
@@ -72,16 +72,15 @@ public class ItemController {
 //        Page<Product> prs = this.productService.fetchProductsWithSpec(pageable, factory);
 
         // case 5
-        String price = priceOptional.isPresent() ? priceOptional.get() : "";
-        Page<Product> prs = this.productService.fetchProductsWithSpec(pageable, price);
+//        String price = priceOptional.isPresent() ? priceOptional.get() : "";
+//        Page<Product> prs = this.productService.fetchProductsWithSpec(pageable, price);
 
         // case 6
-        // List<String> price = Arrays.asList(priceOptional.get().split(","));
-        // Page<Product> prs = this.productService.fetchProductsWithSpec(pageable,
-        // price);
+//        List<String> price = Arrays.asList(priceOptional.get().split(","));
+//        Page<Product> prs = this.productService.fetchProductsWithSpec(pageable, price);
 
         List<Product> products = prs.getContent();
-
+        
         model.addAttribute("products", products);
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", prs.getTotalPages());

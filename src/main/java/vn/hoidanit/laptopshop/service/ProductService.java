@@ -3,8 +3,10 @@ package vn.hoidanit.laptopshop.service;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import vn.hoidanit.laptopshop.domain.*;
+import vn.hoidanit.laptopshop.domain.dto.ProductCriteriaDTO;
 import vn.hoidanit.laptopshop.repository.*;
 import vn.hoidanit.laptopshop.service.specification.ProductSpecs;
 
@@ -37,8 +39,63 @@ public class ProductService {
         return this.productRepository.findAll(pageable);
     }
 
-    public Page<Product> fetchProductsWithSpec(Pageable pageable, String name) {
-        return this.productRepository.findAll(ProductSpecs.nameLike(name), pageable);
+    public Page<Product> fetchProductsWithSpec(Pageable pageable, ProductCriteriaDTO productCriteriaDTO) {
+        if (productCriteriaDTO.getTarget() == null && productCriteriaDTO.getName() == null
+                && productCriteriaDTO.getPrice() == null && productCriteriaDTO.getFactory() == null) {
+            return this.productRepository.findAll(pageable);
+        }
+
+        Specification<Product> combinedSpec = Specification.where(null);
+
+        if (productCriteriaDTO.getTarget() != null && productCriteriaDTO.getTarget().isPresent()) {
+            Specification<Product> tempSpec = ProductSpecs.matchListTarget(productCriteriaDTO.getTarget().get());
+            combinedSpec = combinedSpec.and(tempSpec);
+        }
+        if (productCriteriaDTO.getFactory() != null && productCriteriaDTO.getFactory().isPresent()) {
+            Specification<Product> tempSpec = ProductSpecs.matchListFactory(productCriteriaDTO.getFactory().get());
+            combinedSpec = combinedSpec.and(tempSpec);
+        }
+        if (productCriteriaDTO.getPrice() != null && productCriteriaDTO.getPrice().isPresent()) {
+            Specification<Product> tempSpec = this.buildPriceSpecification(productCriteriaDTO.getPrice().get());
+            combinedSpec = combinedSpec.and(tempSpec);
+        }
+
+        return this.productRepository.findAll(combinedSpec, pageable);
+    }
+
+    public Specification<Product> buildPriceSpecification(List<String> price) {
+        Specification<Product> combinedSpec = Specification.where(null); // disconjunction
+        for (String p : price) {
+            double min = 0;
+            double max = 0;
+
+            // Set the appropriate min and max based on the price range string
+            switch (p) {
+                case "10-toi-15-trieu":
+                    min = 10000000;
+                    max = 15000000;
+//                    count++;
+                    break;
+                case "15-toi-20-trieu":
+                    min = 15000000;
+                    max = 20000000;
+//                    count++;
+                    break;
+                case "tren-20-trieu":
+                    min = 20000000;
+                    max = 200000000;
+//                    count++;
+                    break;
+                // Add more cases as needed
+            }
+
+            if (min != 0 && max != 0) {
+                Specification<Product> rangeSpec = ProductSpecs.matchMultiplePrice(min, max);
+                combinedSpec = combinedSpec.or(rangeSpec);
+            }
+        }
+
+        return combinedSpec;
     }
 
     // case 1

@@ -6,8 +6,8 @@ import java.util.Optional;
 public class ProductCriteriaDTO {
     private Optional<String> name;
     private Optional<String> page;
-    private Optional<List<String>> factories;
-    private Optional<List<String>> targets;
+    private Optional<List<String>> factory;
+    private Optional<List<String>> target;
     private Optional<List<String>> price;
     private Optional<String> sort;
 
@@ -30,20 +30,20 @@ public class ProductCriteriaDTO {
         this.page = page;
     }
 
-    public Optional<List<String>> getFactories() {
-        return factories;
+    public Optional<List<String>> getFactory() {
+        return factory;
     }
 
-    public void setFactories(Optional<List<String>> factories) {
-        this.factories = factories;
+    public void setFactory(Optional<List<String>> factory) {
+        this.factory = factory;
     }
 
-    public Optional<List<String>> getTargets() {
-        return targets;
+    public Optional<List<String>> getTarget() {
+        return target;
     }
 
-    public void setTargets(Optional<List<String>> targets) {
-        this.targets = targets;
+    public void setTarget(Optional<List<String>> target) {
+        this.target = target;
     }
 
     public Optional<List<String>> getPrice() {
@@ -67,8 +67,8 @@ public class ProductCriteriaDTO {
         return "ProductCriteriaDTO{" +
                 "name=" + name +
                 ", page=" + page +
-                ", factories=" + factories +
-                ", targets=" + targets +
+                ", factory=" + factory +
+                ", target=" + target +
                 ", price=" + price +
                 ", sort=" + sort +
                 '}';

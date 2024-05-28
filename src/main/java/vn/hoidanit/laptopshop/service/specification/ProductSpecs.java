@@ -33,13 +33,18 @@ public class ProductSpecs {
     }
 
     // case5
+    public static Specification<Product> matchListTarget(List<String> target) {
+        return (root, query, criteriaBuilder) -> criteriaBuilder.in(root.get(Product_.TARGET)).value(target);
+    }
+
+    // case6
     public static Specification<Product> matchPrice(double min, double max) {
         return (root, query, criteriaBuilder) -> criteriaBuilder.and(
                 criteriaBuilder.gt(root.get(Product_.PRICE), min),
                 criteriaBuilder.le(root.get(Product_.PRICE), max));
     }
 
-    // case6
+    // case7
     public static Specification<Product> matchMultiplePrice(double min, double max) {
         return (root, query, criteriaBuilder) -> criteriaBuilder.between(
                 root.get(Product_.PRICE), min, max);
